@@ -11,10 +11,10 @@ load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY', 'default_secret_key')
 
 # Título de la aplicación
-st.title('License Summary and RA Action ID Analysis')
+st.title('RA NC Bundle's Checker Tool')
 
 # Subida de archivo
-uploaded_file = st.file_uploader("Choose an Excel or CSV file", type=["xlsx", "csv"])
+uploaded_file = st.file_uploader("Cargue su Archivo de Excel para Analizar", type=["xlsx", "csv"])
 
 if uploaded_file is not None:
     # Determinar el tipo de archivo y leerlo
@@ -64,8 +64,8 @@ if uploaded_file is not None:
         st.pyplot(fig)
 
         # Selección de licencia para detalles
-        st.subheader('Details for a Specific License')
-        license_number = st.selectbox('Select a License Number', summary['License Number'])
+        st.subheader('Detalles Especificos por Licencia')
+        license_number = st.selectbox('Seleccione una Licencia', summary['License Number'])
 
         if license_number:
             details = filtered_df[filtered_df['License Number'] == license_number].copy()
