@@ -52,7 +52,7 @@ if uploaded_file is not None:
     if not summary.empty and summary['Count of RA Action ID'].dtype in ['int64', 'float64']:
         # Mostrar el resumen en la aplicación
         st.subheader('Resumen de Licencias')
-        st.dataframe(summary.style.hide(axis="index"),width=800)
+        st.dataframe(summary.style.hide(axis="index"),width=600)
 
         # Generar gráfico de barras apiladas
         fig, ax = plt.subplots(figsize=(15, len(summary) * 0.5))  # Ajustar tamaño del gráfico
