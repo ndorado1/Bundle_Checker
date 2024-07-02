@@ -20,11 +20,23 @@ if uploaded_file is not None:
     # Leer el archivo Excel
     df = pd.read_excel(uploaded_file, sheet_name='Export')
     
+    # Mostrar el DataFrame leído
+    st.write("DataFrame original:")
+    st.write(df.head())
+    
     # Filtrar por país Colombia
     df_colombia = df[df['Country'] == 'Colombia']
     
+    # Mostrar el DataFrame filtrado por Colombia
+    st.write("DataFrame filtrado por Colombia:")
+    st.write(df_colombia.head())
+    
     # Filtrar por estados de acción específicos
     filtered_df = df_colombia[df_colombia['RA Action Status'].isin(['Execution', 'Planning'])]
+    
+    # Mostrar el DataFrame filtrado por estados de acción
+    st.write("DataFrame filtrado por 'Execution' y 'Planning':")
+    st.write(filtered_df.head())
     
     # Crear un resumen por licencia y estado para mostrar en el summary view
     summary = filtered_df.groupby(['License Number', 'RA Action Status']).size().unstack(fill_value=0)
