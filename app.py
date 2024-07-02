@@ -26,7 +26,7 @@ if uploaded_file is not None:
 
     # Mostrar el DataFrame original
     st.write("DataFrame original:")
-    st.write(df.head())
+    st.dataframe(df)
 
     # Filtrar por país Colombia
     if 'Country' in df.columns:
