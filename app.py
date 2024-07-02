@@ -44,7 +44,7 @@ if uploaded_file is not None:
         filtered_df = pd.DataFrame()
 
     # Crear un resumen por licencia y estado para mostrar en el summary view
-   if not filtered_df.empty:
+    if not filtered_df.empty:
         summary = filtered_df.groupby('License Number').size().reset_index(name='Count of RA Action ID')
     else:
         st.error("No hay datos después de aplicar los filtros.")
