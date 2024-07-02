@@ -49,10 +49,10 @@ if uploaded_file is not None:
         
 
     # Comprobar si 'summary' está vacío
-    if not summary.empty and summary.select_dtypes(include=[float, int]).shape[1] > 0:
+    if not summary.empty and summary['Count of RA Action ID'].dtype in ['int64', 'float64']:
         # Mostrar el resumen en la aplicación
         st.subheader('Resumen de Licencias')
-        st.write(summary,index=False)
+        st.write(summary)
 
         # Generar gráfico de barras apiladas
         fig, ax = plt.subplots(figsize=(15, len(summary) * 0.5))  # Ajustar tamaño del gráfico
@@ -69,11 +69,11 @@ if uploaded_file is not None:
 
         if license_number:
             details = filtered_df[filtered_df['License Number'] == license_number].copy()
+            # Convertir RA Action ID a string para evitar formateo incorrecto
+            details['RA Action ID'] = details['RA Action ID'].astype(str)
             # Formatear Submission Due Date
             details['Submission Due Date'] = pd.to_datetime(details['Submission Due Date']).dt.date
-            st.write(details[['RA Action ID', 'Source', 'RA Action Status', 'Submission Due Date','LOC Contact']].style.format({
-                'RA Action ID': '{:d}',
-                'Submission Due Date': '{:%Y-%m-%d}'
-            }),index=False)
+            # Mostrar la tabla sin el índice
+            st.dataframe(details[['RA Action ID', 'Source', 'RA Action Status', 'Submission Due Date','LOC Contact']])
     else:
         st.write("No numeric data available to plot.")
