@@ -84,6 +84,7 @@ if uploaded_file is not None:
         st.subheader('Resumen de Licencias')
         st.dataframe(summary.style.hide(axis="index"),width=600)
 
+        """
         # Generar gráfico de barras apiladas
         fig, ax = plt.subplots(figsize=(15, len(summary) * 0.5))  # Ajustar tamaño del gráfico
         summary.plot(kind='barh', x='License Number', y='Count of RA Action ID', ax=ax)
@@ -92,6 +93,7 @@ if uploaded_file is not None:
         plt.yticks(fontsize=10)  # Ajustar el tamaño de la fuente de las etiquetas del eje Y
         plt.xticks(fontsize=10)  # Ajustar el tamaño de la fuente de las etiquetas del eje X
         st.pyplot(fig)
+        """
 
         # Selección de licencia para detalles
         st.subheader('Detalles Especificos por Licencia')
