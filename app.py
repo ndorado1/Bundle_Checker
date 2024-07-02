@@ -24,9 +24,6 @@ if uploaded_file is not None:
     else:
         df = pd.read_csv(uploaded_file)
 
-    # Mostrar el DataFrame original
-    #st.write("DataFrame original:")
-    #st.dataframe(df)
 
     # Filtrar por país Colombia
     if 'Country' in df.columns:
@@ -49,10 +46,7 @@ if uploaded_file is not None:
     else:
         st.error("No hay datos después de aplicar los filtros.")
         summary = pd.DataFrame()
-
-    # Comprobación de depuración: verificar si 'summary' contiene datos numéricos
-    st.write("DataFrame 'summary':")
-    st.write(summary)
+        
 
     # Comprobar si 'summary' está vacío
     if not summary.empty and summary.select_dtypes(include=[float, int]).shape[1] > 0:
