@@ -11,7 +11,7 @@ load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY', 'default_secret_key')
 
 # Título de la aplicación
-st.title('RA NC Bundle's Checker Tool')
+st.title("RA NC Bundle's Checker Tool")
 
 # Subida de archivo
 uploaded_file = st.file_uploader("Cargue su Archivo de Excel para Analizar", type=["xlsx", "csv"])
