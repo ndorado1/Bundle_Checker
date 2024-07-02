@@ -69,6 +69,6 @@ if uploaded_file is not None:
 
         if license_number:
             details = filtered_df[filtered_df['License Number'] == license_number]
-            st.write(details[['RA Action ID', 'Source', 'RA Action Status', 'Submission Due Date','LOC Contact']])
+            st.dataframe(details[['RA Action ID', 'Source', 'RA Action Status', 'Submission Due Date','LOC Contact']])
     else:
         st.write("No numeric data available to plot.")
