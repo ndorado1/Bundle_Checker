@@ -55,10 +55,12 @@ if uploaded_file is not None:
         st.write(summary)
 
         # Generar gráfico de barras apiladas
-        fig, ax = plt.subplots(figsize=(20, 8))
-        summary.plot(kind='barh', stacked=True, ax=ax)
+        fig, ax = plt.subplots(figsize=(15, len(summary) * 0.5))  # Ajustar tamaño del gráfico
+        summary.plot(kind='barh', x='License Number', y='Count of RA Action ID', ax=ax)
         plt.xlabel('Count of RA Action ID')
-        plt.title('RA Action ID Count per License Number by Status')
+        plt.title('RA Action ID Count per License Number')
+        plt.yticks(fontsize=10)  # Ajustar el tamaño de la fuente de las etiquetas del eje Y
+        plt.xticks(fontsize=10)  # Ajustar el tamaño de la fuente de las etiquetas del eje X
         st.pyplot(fig)
 
         # Selección de licencia para detalles
