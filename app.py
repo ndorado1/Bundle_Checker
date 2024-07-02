@@ -25,8 +25,8 @@ if uploaded_file is not None:
         df = pd.read_csv(uploaded_file)
 
     # Mostrar el DataFrame original
-    st.write("DataFrame original:")
-    st.dataframe(df)
+    #st.write("DataFrame original:")
+    #st.dataframe(df)
 
     # Filtrar por país Colombia
     if 'Country' in df.columns:
@@ -35,9 +35,6 @@ if uploaded_file is not None:
         st.error("La columna 'Country' no existe en el DataFrame.")
         df_colombia = pd.DataFrame()
 
-    # Mostrar el DataFrame filtrado por Colombia
-    st.write("DataFrame filtrado por Colombia:")
-    st.write(df_colombia.head())
 
     # Filtrar por estados de acción específicos
     if 'RA Action Status' in df_colombia.columns:
@@ -46,13 +43,9 @@ if uploaded_file is not None:
         st.error("La columna 'RA Action Status' no existe en el DataFrame.")
         filtered_df = pd.DataFrame()
 
-    # Mostrar el DataFrame filtrado por estados de acción
-    st.write("DataFrame filtrado por 'Execution' y 'Planning':")
-    st.write(filtered_df.head())
-
     # Crear un resumen por licencia y estado para mostrar en el summary view
-    if not filtered_df.empty:
-        summary = filtered_df.groupby(['License Number', 'RA Action Status']).size().unstack(fill_value=0)
+   if not filtered_df.empty:
+        summary = filtered_df.groupby('License Number').size().reset_index(name='Count of RA Action ID')
     else:
         st.error("No hay datos después de aplicar los filtros.")
         summary = pd.DataFrame()
@@ -64,7 +57,7 @@ if uploaded_file is not None:
     # Comprobar si 'summary' está vacío
     if not summary.empty and summary.select_dtypes(include=[float, int]).shape[1] > 0:
         # Mostrar el resumen en la aplicación
-        st.subheader('Summary of Licenses')
+        st.subheader('Resumen de Licencias')
         st.write(summary)
 
         # Generar gráfico de barras apiladas
