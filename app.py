@@ -11,7 +11,37 @@ load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY', 'default_secret_key')
 
 # Título de la aplicación
-st.title("RA NC Bundle's Checker Tool")
+st.markdown(
+    """
+    <style>
+    .main {
+        background-color: #f0f0f0;
+    }
+    .header {
+        text-align: center;
+        font-size: 36px;
+        font-weight: bold;
+        color: #333;
+    }
+    .subheader {
+        font-size: 24px;
+        color: #666;
+    }
+    .logo {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# Insertar logotipo
+#st.image("path_to_your_logo.png", use_column_width=True, caption="Your Company Logo")
+
+# Título de la aplicación
+st.markdown('<div class="header">RA NC Bundles Checker Tool</div>', unsafe_allow_html=True)
 
 # Subida de archivo
 uploaded_file = st.file_uploader("Cargue su Archivo de Excel para Analizar", type=["xlsx", "csv"])
