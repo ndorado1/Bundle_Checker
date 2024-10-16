@@ -56,11 +56,12 @@ if uploaded_file is not None:
 
 
     # Filtrar por país Colombia
-    if 'Country' in df.columns:
-        df_colombia = df[df['Country'] == 'COLOMBIA']
-    else:
-        st.error("La columna 'Country' no existe en el DataFrame.")
-        df_colombia = pd.DataFrame()
+  #  if 'Country' in df.columns:
+  #      df_colombia = df[df['Country'] == 'COLOMBIA']
+  #  else:
+  #      st.error("La columna 'Country' no existe en el DataFrame.")
+  #      df_colombia = pd.DataFrame()
+    df_colombia=df
 
 
     # Filtrar por estados de acción específicos
