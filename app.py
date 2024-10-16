@@ -83,7 +83,7 @@ if uploaded_file is not None:
     if not summary.empty and summary['Count of RA Action ID'].dtype in ['int64', 'float64']:
         # Mostrar el resumen en la aplicación
         st.subheader('Resumen de Licencias')
-        st.dataframe(summary.style.hide(axis="index"),width=600)        
+        st.dataframe(summary,width=600,hide_index=True)        
             
 
         # Selección de licencia para detalles
