@@ -117,44 +117,44 @@ if uploaded_file is not None:
     else:
         st.write("No numeric data available to plot.")
         
-# Función para construir el prompt desde el DataFrame 'details'
-def construir_prompt_desde_detalles(acciones_agrupadas):
-    prompt = "Analiza las siguientes licencias sanitarias con múltiples trámites asociados y sugiere cuáles tienenmayor oportunidad de unificar trámites (bundle). Las acciones con fechas de vencimiento pasadas no son válidas, y la diferencia entre las fechas de vencimiento no debe ser mayor a 3 meses. Solo se consideran acciones cuyos estados sean Planning o Execution\n\n"
+# # Función para construir el prompt desde el DataFrame 'details'
+# def construir_prompt_desde_detalles(acciones_agrupadas):
+#     prompt = "Analiza las siguientes licencias sanitarias con múltiples trámites asociados y sugiere cuáles tienenmayor oportunidad de unificar trámites (bundle). Las acciones con fechas de vencimiento pasadas no son válidas, y la diferencia entre las fechas de vencimiento no debe ser mayor a 3 meses. Solo se consideran acciones cuyos estados sean Planning o Execution\n\n"
 
-    for _, row in acciones_agrupadas.iterrows():
-        prompt += (
-           f"Licencia {row['License Number']} tiene la acción {row['RA Action ID']} con estado '{row['RA Action Status']}' y fecha de vencimiento {row['Submission Due Date']}.\n"
-        )
+#     for _, row in acciones_agrupadas.iterrows():
+#         prompt += (
+#            f"Licencia {row['License Number']} tiene la acción {row['RA Action ID']} con estado '{row['RA Action Status']}' y fecha de vencimiento {row['Submission Due Date']}.\n"
+#         )
 
-    prompt += "\n¿Cuáles de estas licencias tienen mayor oportunidad de unificación en un solo trámite (bundle) y por qué?"
-    return prompt
-
-
-
-# Construir el prompt desde los detalles
-prompt = construir_prompt_desde_detalles(acciones_agrupadas)
-st.write(prompt)
-
-# Función para generar el diagnóstico con GPT4o-mini
-# Configura tu clave API
-openai.api_key = api_key
-
-# Función para enviar el prompt y obtener la respuesta
-def generar_diagnostico(prompt):
-    response = openai.chat.completions.create(
-        model="gpt-4o-mini",  # Usar el modelo correcto, puedes cambiar por "gpt-4o-mini" si aplica
-        messages=[
-            {"role": "system", "content": "Eres un asistente que analiza datos para identificar oportunidades de bundle."},
-            {"role": "user", "content": prompt}
-        ],
-        max_tokens=200,
-        temperature=0.7
-    )
-    return response.choices[0].message.content
+#     prompt += "\n¿Cuáles de estas licencias tienen mayor oportunidad de unificación en un solo trámite (bundle) y por qué?"
+#     return prompt
 
 
-# Obtener el diagnóstico
-diagnostico = generar_diagnostico(prompt)
 
-# Mostrar el diagnóstico en la app de Streamlit
-st.write(f"Diagnóstico generado por la IA:\n{diagnostico}")
+# # Construir el prompt desde los detalles
+# prompt = construir_prompt_desde_detalles(acciones_agrupadas)
+# st.write(prompt)
+
+# # Función para generar el diagnóstico con GPT4o-mini
+# # Configura tu clave API
+# openai.api_key = api_key
+
+# # Función para enviar el prompt y obtener la respuesta
+# def generar_diagnostico(prompt):
+#     response = openai.chat.completions.create(
+#         model="gpt-4o-mini",  # Usar el modelo correcto, puedes cambiar por "gpt-4o-mini" si aplica
+#         messages=[
+#             {"role": "system", "content": "Eres un asistente que analiza datos para identificar oportunidades de bundle."},
+#             {"role": "user", "content": prompt}
+#         ],
+#         max_tokens=200,
+#         temperature=0.7
+#     )
+#     return response.choices[0].message.content
+
+
+# # Obtener el diagnóstico
+# diagnostico = generar_diagnostico(prompt)
+
+# # Mostrar el diagnóstico en la app de Streamlit
+# st.write(f"Diagnóstico generado por la IA:\n{diagnostico}")
