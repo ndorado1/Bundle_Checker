@@ -5,8 +5,7 @@ import streamlit as st
 from dotenv import load_dotenv
 import openai
 from datetime import datetime, timedelta
-# Cargar variables de entorno desde el archivo .env
-load_dotenv()
+
 
 # Configurar la clave secreta (si es necesaria)
 api_key = os.getenv('OPENAI_API_KEY')
