@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import streamlit as st
 from dotenv import load_dotenv
+import openai
 
 # Cargar variables de entorno desde el archivo .env
 load_dotenv()
@@ -100,3 +101,42 @@ if uploaded_file is not None:
             st.dataframe(details[['RA Action ID', 'Source', 'RA Action Status', 'Submission Due Date','LOC Contact']].style.hide(axis="index"),width=1500)
     else:
         st.write("No numeric data available to plot.")
+# Función para construir el prompt desde el DataFrame 'details'
+def construir_prompt_desde_detalles(details):
+    prompt = "Analiza las siguientes acciones regulatorias para la licencia y sugiere si hay oportunidad de unificar trámites (bundle):\n\n"
+
+    for _, row in details.iterrows():
+        prompt += (
+            f"Acción {row['RA Action ID']} desde {row['Source']} tiene el estatus '{row['RA Action Status']}' y la fecha de vencimiento de presentación es {row['Submission Due Date']}. "
+            f"El contacto es {row['LOC Contact']}.\n"
+        )
+
+    prompt += "\n¿Cuáles de estas acciones pueden ser unificadas en un solo trámite y por qué?"
+    return prompt
+
+# Construir el prompt desde los detalles
+prompt = construir_prompt_desde_detalles(details)
+
+# Función para generar el diagnóstico con GPT4o-mini
+# Configura tu clave API
+openai.api_key = api_key
+
+# Función para enviar el prompt y obtener la respuesta
+def generar_diagnostico(prompt):
+    response = openai.ChatCompletion.create(
+        model="gpt-4o-mini",  # Usar el modelo correcto, puedes cambiar por "gpt-4o-mini" si aplica
+        messages=[
+            {"role": "system", "content": "Eres un asistente que analiza datos para identificar oportunidades de bundle."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=200,
+        temperature=0.7
+    )
+    return response['choices'][0]['message']['content'].strip()
+
+
+# Obtener el diagnóstico
+diagnostico = generar_diagnostico(prompt)
+
+# Mostrar el diagnóstico en la app de Streamlit
+st.write(f"Diagnóstico generado por la IA:\n{diagnostico}")
