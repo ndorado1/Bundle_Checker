@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import streamlit as st
 from dotenv import load_dotenv
 import openai
-
+from datetime import datetime, timedelta
 # Cargar variables de entorno desde el archivo .env
 load_dotenv()
 
@@ -71,6 +71,22 @@ if uploaded_file is not None:
     else:
         st.error("La columna 'RA Action Status' no existe en el DataFrame.")
         filtered_df = pd.DataFrame()
+        
+    # Asegurarse de que la columna 'Submission Due Date' está en formato de fecha
+    filtered_df['Submission Due Date'] = pd.to_datetime(filtered_df['Submission Due Date']).dt.date
+
+    # Filtrar acciones con fecha de vencimiento válida (no pasada)
+    today = datetime.today().date()
+    acciones_validas = filtered_df[filtered_df['Submission Due Date'] > today]
+
+    # Agrupar por licencia y verificar si la diferencia entre las fechas es mayor a 3 meses
+    def es_valido_para_bundle(grupo):
+        fechas = sorted(grupo['Submission Due Date'])
+        if (fechas[-1] - fechas[0]).days <= 90:  # 3 meses = 90 días
+            return True
+        return False
+
+    acciones_agrupadas = acciones_validas.groupby('License Number').filter(es_valido_para_bundle)    
 
     # Crear un resumen por licencia y estado para mostrar en el summary view
     if not filtered_df.empty:
@@ -101,17 +117,17 @@ if uploaded_file is not None:
             st.dataframe(details[['RA Action ID', 'Source', 'RA Action Status', 'Submission Due Date','LOC Contact']].style.hide(axis="index"),width=1500)
     else:
         st.write("No numeric data available to plot.")
+        
 # Función para construir el prompt desde el DataFrame 'details'
-def construir_prompt_desde_detalles(details):
-    prompt = "Analiza las siguientes acciones regulatorias para la licencia y sugiere si hay oportunidad de unificar trámites (bundle):\n\n"
+def construir_prompt_desde_detalles(summary):
+    prompt = "Analiza las siguientes licencias sanitarias con múltiples trámites asociados y sugiere cuáles tienenmayor oportunidad de unificar trámites (bundle). Las acciones con fechas de vencimiento pasadas no son válidas, y la diferencia entre las fechas de vencimiento no debe ser mayor a 3 meses. Solo se consideran acciones cuyos estados sean Planning o Execution\n\n"
 
-    for _, row in details.iterrows():
+    for _, row in acciones_agrupadas.iterrows():
         prompt += (
-            f"Acción {row['RA Action ID']} desde {row['Source']} tiene el estatus '{row['RA Action Status']}' y la fecha de vencimiento de presentación es {row['Submission Due Date']}. "
-            f"El contacto es {row['LOC Contact']}.\n"
+           f"Licencia {row['License Number']} tiene la acción {row['RA Action ID']} con estado '{row['RA Action Status']}' y fecha de vencimiento {row['Submission Due Date']}.\n"
         )
 
-    prompt += "\n¿Cuáles de estas acciones pueden ser unificadas en un solo trámite y por qué?"
+    prompt += "\n¿Cuáles de estas licencias tienen mayor oportunidad de unificación en un solo trámite (bundle) y por qué?"
     return prompt
 
 # Construir el prompt desde los detalles
