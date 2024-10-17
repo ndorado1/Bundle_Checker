@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Configurar la clave secreta (si es necesaria)
-SECRET_KEY = os.getenv('SECRET_KEY', 'default_secret_key')
+api_key = os.getenv('OPENAI_API_KEY')
 
 # Título de la aplicación
 st.markdown(
