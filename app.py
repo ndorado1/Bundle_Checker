@@ -118,7 +118,7 @@ if uploaded_file is not None:
         st.write("No numeric data available to plot.")
         
 # Función para construir el prompt desde el DataFrame 'details'
-def construir_prompt_desde_detalles(summary):
+def construir_prompt_desde_detalles(acciones_agrupadas):
     prompt = "Analiza las siguientes licencias sanitarias con múltiples trámites asociados y sugiere cuáles tienenmayor oportunidad de unificar trámites (bundle). Las acciones con fechas de vencimiento pasadas no son válidas, y la diferencia entre las fechas de vencimiento no debe ser mayor a 3 meses. Solo se consideran acciones cuyos estados sean Planning o Execution\n\n"
 
     for _, row in acciones_agrupadas.iterrows():
@@ -130,7 +130,7 @@ def construir_prompt_desde_detalles(summary):
     return prompt
 
 # Construir el prompt desde los detalles
-prompt = construir_prompt_desde_detalles(details)
+prompt = construir_prompt_desde_detalles(acciones_agrupadas)
 
 # Función para generar el diagnóstico con GPT4o-mini
 # Configura tu clave API
