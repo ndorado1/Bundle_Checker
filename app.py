@@ -129,10 +129,11 @@ def construir_prompt_desde_detalles(acciones_agrupadas):
     prompt += "\n¿Cuáles de estas licencias tienen mayor oportunidad de unificación en un solo trámite (bundle) y por qué?"
     return prompt
 
-st.write(prompt)
+
 
 # Construir el prompt desde los detalles
 prompt = construir_prompt_desde_detalles(acciones_agrupadas)
+st.write(prompt)
 
 # Función para generar el diagnóstico con GPT4o-mini
 # Configura tu clave API
