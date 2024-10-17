@@ -138,7 +138,7 @@ openai.api_key = api_key
 
 # Función para enviar el prompt y obtener la respuesta
 def generar_diagnostico(prompt):
-    response = openai.ChatCompletion.create(
+    response = openai.chat.completions.create(
         model="gpt-4o-mini",  # Usar el modelo correcto, puedes cambiar por "gpt-4o-mini" si aplica
         messages=[
             {"role": "system", "content": "Eres un asistente que analiza datos para identificar oportunidades de bundle."},
@@ -147,7 +147,7 @@ def generar_diagnostico(prompt):
         max_tokens=200,
         temperature=0.7
     )
-    return response['choices'][0]['message']['content'].strip()
+    return response.choices[0].message.content
 
 
 # Obtener el diagnóstico
